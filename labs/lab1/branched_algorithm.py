@@ -1,7 +1,7 @@
 from math import pi
 
 
-def branched(r, c, b):
+def branched(r, b, c):
     if r > 0:
         return (pi * r ** 2) / (2 * pi * r + 21 * r)
     else:
