@@ -43,6 +43,9 @@ class LinearAlgorithmWindow(QWidget):
         linear_image_label.setPixmap(QPixmap("lab1_linear.png"))
         form.addWidget(linear_image_label)
 
+        file_load_button = QPushButton("Load file")
+        form.addWidget(file_load_button)
+
         a_label = QLabel("a")
         a_entry_field = QLineEdit()
         form.addRow(a_label, a_entry_field)
