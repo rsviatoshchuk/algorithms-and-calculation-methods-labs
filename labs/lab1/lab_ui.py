@@ -41,11 +41,9 @@ class LinearAlgorithmWindow(QWidget):
 
         linear_image_label = QLabel()
         linear_image_label.setPixmap(QPixmap("lab1_linear.png"))
-
         form.addWidget(linear_image_label)
 
         a_label = QLabel("a")
-        # a_label.setStyleSheet()
         a_entry_field = QLineEdit()
         form.addRow(a_label, a_entry_field)
 
@@ -56,10 +54,10 @@ class LinearAlgorithmWindow(QWidget):
         x_label = QLabel("x")
         x_entry_field = QLineEdit()
         form.addRow(x_label, x_entry_field)
-        self.setLayout(form)
 
         calculate_button = QPushButton("Calculate")
         form.addWidget(calculate_button)
+        self.setLayout(form)
 
 
 class BranchedAlgorithmWindow(QWidget):
