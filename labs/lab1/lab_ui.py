@@ -2,6 +2,9 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLay
                              QLineEdit, QPushButton)
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap
+import linear_algorithm
+import branched_algorithm
+import cyclic_algorithm
 
 
 class LabWindow(QWidget):
@@ -37,81 +40,111 @@ class LinearAlgorithmWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        form = QFormLayout()
+        self.form = QFormLayout()
 
-        linear_image_label = QLabel()
-        linear_image_label.setPixmap(QPixmap("lab1_linear.png"))
-        linear_image_label.setAlignment(Qt.AlignCenter)
-        form.addWidget(linear_image_label)
+        self.linear_image_label = QLabel()
+        self.linear_image_label.setPixmap(QPixmap("lab1_linear.png"))
+        self.linear_image_label.setAlignment(Qt.AlignCenter)
+        self.form.addWidget(self.linear_image_label)
 
-        file_load_button = QPushButton("Load file")
-        form.addWidget(file_load_button)
+        self.file_load_button = QPushButton("Load file")
+        self.file_load_button.clicked.connect(self.load_file)
+        self.form.addWidget(self.file_load_button)
 
-        a_label = QLabel("a")
-        a_entry_field = QLineEdit()
-        form.addRow(a_label, a_entry_field)
+        self.a_label = QLabel("a")
+        self.a_entry_field = QLineEdit()
+        self.form.addRow(self.a_label, self.a_entry_field)
 
-        b_label = QLabel("b")
-        b_entry_field = QLineEdit()
-        form.addRow(b_label, b_entry_field)
+        self.b_label = QLabel("b")
+        self.b_entry_field = QLineEdit()
+        self.form.addRow(self.b_label, self.b_entry_field)
 
-        x_label = QLabel("x")
-        x_entry_field = QLineEdit()
-        form.addRow(x_label, x_entry_field)
+        self.x_label = QLabel("x")
+        self.x_entry_field = QLineEdit()
+        self.form.addRow(self.x_label, self.x_entry_field)
 
-        calculate_button = QPushButton("Calculate")
-        form.addWidget(calculate_button)
-        self.setLayout(form)
+        self.calculate_button = QPushButton("Calculate")
+        self.calculate_button.clicked.connect(self.calculate_linear)
+        self.form.addWidget(self.calculate_button)
+        self.setLayout(self.form)
+
+    def calculate_linear(self):
+        a = int(self.a_entry_field.text())
+        b = int(self.b_entry_field.text())
+        x = int(self.x_entry_field.text())
+        print(linear_algorithm.linear(a, b, x))
+
+    def load_file(self):
+        pass
 
 
 class BranchedAlgorithmWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        form = QFormLayout()
+        self.form = QFormLayout()
 
-        branched_image_label = QLabel()
-        branched_image_label.setPixmap(QPixmap("lab1_branched.png"))
-        branched_image_label.setAlignment(Qt.AlignCenter)
-        form.addWidget(branched_image_label)
+        self.branched_image_label = QLabel()
+        self.branched_image_label.setPixmap(QPixmap("lab1_branched.png"))
+        self.branched_image_label.setAlignment(Qt.AlignCenter)
+        self.form.addWidget(self.branched_image_label)
 
-        file_load_button = QPushButton("Load file")
-        form.addWidget(file_load_button)
+        self.file_load_button = QPushButton("Load file")
+        self.file_load_button.clicked.connect(self.load_file)
+        self.form.addWidget(self.file_load_button)
 
-        r_label = QLabel("r")
-        r_entry_field = QLineEdit()
-        form.addRow(r_label, r_entry_field)
+        self.r_label = QLabel("r")
+        self.r_entry_field = QLineEdit()
+        self.form.addRow(self.r_label, self.r_entry_field)
 
-        b_label = QLabel("b")
-        b_entry_field = QLineEdit()
-        form.addRow(b_label, b_entry_field)
+        self.b_label = QLabel("b")
+        self.b_entry_field = QLineEdit()
+        self.form.addRow(self.b_label, self.b_entry_field)
 
-        c_label = QLabel("c")
-        c_entry_field = QLineEdit()
-        form.addRow(c_label, c_entry_field)
+        self.c_label = QLabel("c")
+        self.c_entry_field = QLineEdit()
+        self.form.addRow(self.c_label, self.c_entry_field)
 
-        calculate_button = QPushButton("Calculate")
-        form.addWidget(calculate_button)
-        self.setLayout(form)
+        self.calculate_button = QPushButton("Calculate")
+        self.calculate_button.clicked.connect(self.calculate_branched)
+        self.form.addWidget(self.calculate_button)
+        self.setLayout(self.form)
+
+    def calculate_branched(self):
+        r = int(self.r_entry_field.text())
+        b = int(self.b_entry_field.text())
+        c = int(self.c_entry_field.text())
+        print(branched_algorithm.branched(r, b, c))
+
+    def load_file(self):
+        pass
 
 
 class CyclicAlgorithmWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        form = QFormLayout()
+        self.form = QFormLayout()
 
-        cyclic_image_label = QLabel()
-        cyclic_image_label.setPixmap(QPixmap("lab1_cyclic.png"))
-        cyclic_image_label.setAlignment(Qt.AlignCenter)
-        form.addWidget(cyclic_image_label)
+        self.cyclic_image_label = QLabel()
+        self.cyclic_image_label.setPixmap(QPixmap("lab1_cyclic.png"))
+        self.cyclic_image_label.setAlignment(Qt.AlignCenter)
+        self.form.addWidget(self.cyclic_image_label)
 
-        file_load_button = QPushButton("Load file")
-        form.addWidget(file_load_button)
+        self.file_load_button = QPushButton("Load file")
+        self.file_load_button.clicked.connect(self.load_file)
+        self.form.addWidget(self.file_load_button)
 
-        calculate_button = QPushButton("Calculate")
-        form.addWidget(calculate_button)
-        self.setLayout(form)
+        self.calculate_button = QPushButton("Calculate")
+        self.calculate_button.clicked.connect(self.calculate_cyclic)
+        self.form.addWidget(self.calculate_button)
+        self.setLayout(self.form)
+
+    def calculate_cyclic(self):
+        pass
+
+    def load_file(self):
+        pass
 
 
 if __name__ == '__main__':
