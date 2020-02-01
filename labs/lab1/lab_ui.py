@@ -1,5 +1,7 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QTabWidget, QLabel, QVBoxLayout, QDesktopWidget
+from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLayout, QDesktopWidget, QFormLayout,
+                             QLineEdit, QPushButton)
 from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QPixmap
 
 
 class LabWindow(QWidget):
@@ -34,6 +36,30 @@ class LabWindow(QWidget):
 class LinearAlgorithmWindow(QWidget):
     def __init__(self):
         super().__init__()
+
+        form = QFormLayout()
+
+        linear_image_label = QLabel()
+        linear_image_label.setPixmap(QPixmap("lab1_linear.png"))
+
+        form.addWidget(linear_image_label)
+
+        a_label = QLabel("a")
+        # a_label.setStyleSheet()
+        a_entry_field = QLineEdit()
+        form.addRow(a_label, a_entry_field)
+
+        b_label = QLabel("b")
+        b_entry_field = QLineEdit()
+        form.addRow(b_label, b_entry_field)
+
+        x_label = QLabel("x")
+        x_entry_field = QLineEdit()
+        form.addRow(x_label, x_entry_field)
+        self.setLayout(form)
+
+        calculate_button = QPushButton("Calculate")
+        form.addWidget(calculate_button)
 
 
 class BranchedAlgorithmWindow(QWidget):
