@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLayout, QDesktopWidget, QFormLayout,
-                             QLineEdit, QPushButton)
+                             QLineEdit, QPushButton, QMessageBox)
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QDoubleValidator
 import linear_algorithm
 import branched_algorithm
 import cyclic_algorithm
@@ -53,14 +53,17 @@ class LinearAlgorithmWindow(QWidget):
 
         self.a_label = QLabel("a")
         self.a_entry_field = QLineEdit()
+        self.a_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.a_label, self.a_entry_field)
 
         self.b_label = QLabel("b")
         self.b_entry_field = QLineEdit()
+        self.b_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.b_label, self.b_entry_field)
 
         self.x_label = QLabel("x")
         self.x_entry_field = QLineEdit()
+        self.x_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.x_label, self.x_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
@@ -69,10 +72,23 @@ class LinearAlgorithmWindow(QWidget):
         self.setLayout(self.form)
 
     def calculate_linear(self):
-        a = int(self.a_entry_field.text())
-        b = int(self.b_entry_field.text())
-        x = int(self.x_entry_field.text())
-        print(linear_algorithm.linear(a, b, x))
+        try:
+            a = int(self.a_entry_field.text())
+        except:
+            QMessageBox().warning(self, "Invalid value a", "Enter valid a", QMessageBox.Ok)
+
+        try:
+            b = int(self.b_entry_field.text())
+        except:
+            print("invalid value b")
+
+        try:
+            x = int(self.x_entry_field.text())
+        except:
+            print("invalid value x")
+            return
+        else:
+            print(linear_algorithm.linear(a, b, x))
 
     def load_file(self):
         pass
@@ -95,14 +111,17 @@ class BranchedAlgorithmWindow(QWidget):
 
         self.r_label = QLabel("r")
         self.r_entry_field = QLineEdit()
+        self.r_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.r_label, self.r_entry_field)
 
         self.b_label = QLabel("b")
         self.b_entry_field = QLineEdit()
+        self.b_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.b_label, self.b_entry_field)
 
         self.c_label = QLabel("c")
         self.c_entry_field = QLineEdit()
+        self.c_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.c_label, self.c_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
