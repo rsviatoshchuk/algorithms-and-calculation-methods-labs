@@ -104,7 +104,6 @@ class LinearAlgorithmWindow(QWidget):
     def load_file(self):
         try:
             file_name = QFileDialog.getOpenFileName(self, "Load file")
-            print(file_name)
             with open(file_name[0], "r") as file:
                 self.a_entry_field.setText(file.readline()[2:])
                 self.b_entry_field.setText(file.readline()[2:])
@@ -198,7 +197,14 @@ class BranchedAlgorithmWindow(QWidget):
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
     def load_file(self):
-        pass
+        try:
+            file_name = QFileDialog.getOpenFileName(self, "Load file")
+            with open(file_name[0], "r") as file:
+                self.r_entry_field.setText(file.readline()[2:])
+                self.b_entry_field.setText(file.readline()[2:])
+                self.c_entry_field.setText(file.readline()[2:])
+        except:
+            QMessageBox().warning(self, "Error", "Shit happens")
 
     def save_to_file(self):
         file_name = "branched"
