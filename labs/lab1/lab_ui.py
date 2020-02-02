@@ -133,10 +133,26 @@ class BranchedAlgorithmWindow(QWidget):
         self.setLayout(self.form)
 
     def calculate_branched(self):
-        r = int(self.r_entry_field.text())
-        b = int(self.b_entry_field.text())
-        c = int(self.c_entry_field.text())
-        print(branched_algorithm.branched(r, b, c))
+        errors = []
+        try:
+            r = int(self.r_entry_field.text())
+        except:
+            errors.append("Invalid value r")
+
+        try:
+            b = int(self.b_entry_field.text())
+        except:
+            errors.append("Invalid value b")
+
+        try:
+            c = int(self.c_entry_field.text())
+        except:
+            errors.append("Invalid value c")
+
+        if len(errors) == 0:
+            print(branched_algorithm.branched(r, b, c))
+        else:
+            QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
     def load_file(self):
         pass
