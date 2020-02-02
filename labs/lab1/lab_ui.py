@@ -69,6 +69,11 @@ class LinearAlgorithmWindow(QWidget):
         self.calculate_button = QPushButton("Calculate")
         self.calculate_button.clicked.connect(self.calculate_linear)
         self.form.addWidget(self.calculate_button)
+
+        self.save_to_file_button = QPushButton("Save to file")
+        self.save_to_file_button.clicked.connect(self.save_to_file)
+        self.form.addWidget(self.save_to_file_button)
+
         self.setLayout(self.form)
 
     def calculate_linear(self):
@@ -94,6 +99,9 @@ class LinearAlgorithmWindow(QWidget):
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
     def load_file(self):
+        pass
+
+    def save_to_file(self):
         pass
 
 
@@ -130,6 +138,11 @@ class BranchedAlgorithmWindow(QWidget):
         self.calculate_button = QPushButton("Calculate")
         self.calculate_button.clicked.connect(self.calculate_branched)
         self.form.addWidget(self.calculate_button)
+
+        self.save_to_file_button = QPushButton("Save to file")
+        self.save_to_file_button.clicked.connect(self.save_to_file)
+        self.form.addWidget(self.save_to_file_button)
+
         self.setLayout(self.form)
 
     def calculate_branched(self):
@@ -157,6 +170,9 @@ class BranchedAlgorithmWindow(QWidget):
     def load_file(self):
         pass
 
+    def save_to_file(self):
+        pass
+
 
 class CyclicAlgorithmWindow(QWidget):
     def __init__(self):
@@ -176,12 +192,20 @@ class CyclicAlgorithmWindow(QWidget):
         self.calculate_button = QPushButton("Calculate")
         self.calculate_button.clicked.connect(self.calculate_cyclic)
         self.form.addWidget(self.calculate_button)
+
+        self.save_to_file_button = QPushButton("Save to file")
+        self.save_to_file_button.clicked.connect(self.save_to_file)
+        self.form.addWidget(self.save_to_file_button)
+
         self.setLayout(self.form)
 
     def calculate_cyclic(self):
         pass
 
     def load_file(self):
+        pass
+
+    def save_to_file(self):
         pass
 
 
