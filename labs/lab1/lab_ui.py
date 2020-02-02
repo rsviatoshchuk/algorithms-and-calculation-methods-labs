@@ -158,6 +158,9 @@ class BranchedAlgorithmWindow(QWidget):
         self.calculate_button.clicked.connect(self.calculate_branched)
         self.form.addWidget(self.calculate_button)
 
+        self.calculated_value_label = QLabel()
+        self.form.addWidget(self.calculated_value_label)
+
         self.save_to_file_button = QPushButton("Save to file")
         self.save_to_file_button.clicked.connect(self.save_to_file)
         self.form.addWidget(self.save_to_file_button)
@@ -182,7 +185,7 @@ class BranchedAlgorithmWindow(QWidget):
             errors.append("Invalid value c")
 
         if len(errors) == 0:
-            print(branched_algorithm.branched(r, b, c))
+            self.calculated_value_label.setText(str(branched_algorithm.branched(r, b, c)))
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
@@ -190,7 +193,23 @@ class BranchedAlgorithmWindow(QWidget):
         pass
 
     def save_to_file(self):
-        pass
+        file_name = "branched"
+        counter = 1
+        while True:
+            try:
+                with open(file_name + str(counter) + ".txt", "xt") as file:
+                    file.write("a " + self.r_entry_field.text() + "\n")
+                    file.write("b " + self.b_entry_field.text() + "\n")
+                    file.write("x " + self.c_entry_field.text() + "\n")
+                    file.write("calculated " + self.calculated_value_label.text() + "\n")
+
+            except FileExistsError:
+                counter += 1
+            else:
+                QMessageBox.information(self, "Info",
+                                        "Successfully saved in {}".format(file_name + str(counter) + ".txt"),
+                                        QMessageBox.Ok)
+                break
 
 
 class CyclicAlgorithmWindow(QWidget):
