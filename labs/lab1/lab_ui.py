@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLayout, QDesktopWidget, QFormLayout,
-                             QLineEdit, QPushButton, QMessageBox)
+                             QLineEdit, QPushButton, QMessageBox, QFileDialog)
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap, QDoubleValidator
 import linear_algorithm
@@ -102,7 +102,15 @@ class LinearAlgorithmWindow(QWidget):
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
     def load_file(self):
-        pass
+        try:
+            file_name = QFileDialog.getOpenFileName(self, "Load file")
+            print(file_name)
+            with open(file_name[0], "r") as file:
+                self.a_entry_field.setText(file.readline()[2:])
+                self.b_entry_field.setText(file.readline()[2:])
+                self.x_entry_field.setText(file.readline()[2:])
+        except:
+            QMessageBox().warning(self, "Error", "Shit happens")
 
     def save_to_file(self):
         file_name = "linear"
