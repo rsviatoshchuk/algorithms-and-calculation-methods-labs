@@ -72,23 +72,26 @@ class LinearAlgorithmWindow(QWidget):
         self.setLayout(self.form)
 
     def calculate_linear(self):
+        errors = []
         try:
             a = int(self.a_entry_field.text())
         except:
-            QMessageBox().warning(self, "Invalid value a", "Enter valid a", QMessageBox.Ok)
+            errors.append("Invalid value a")
 
         try:
             b = int(self.b_entry_field.text())
         except:
-            print("invalid value b")
+            errors.append("Invalid value b")
 
         try:
             x = int(self.x_entry_field.text())
         except:
-            print("invalid value x")
-            return
-        else:
+            errors.append("Invalid value x")
+
+        if len(errors) == 0:
             print(linear_algorithm.linear(a, b, x))
+        else:
+            QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
     def load_file(self):
         pass
