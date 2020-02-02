@@ -16,7 +16,7 @@ class LabWindow(QWidget):
     def init_window(self):
         self.setWindowTitle("Lab1")
         self.setMinimumSize(QSize(600, 400))
-        self.setStyleSheet("background-color:#2D3047")
+        self.setStyleSheet("background-color:#2D3047; color:black; font-family: 'Open Sans Condensed'; font-size: 24px")
 
         tabs = QTabWidget()
         tabs.addTab(LinearAlgorithmWindow(), "Linear")
@@ -51,17 +51,17 @@ class LinearAlgorithmWindow(QWidget):
         self.file_load_button.clicked.connect(self.load_file)
         self.form.addWidget(self.file_load_button)
 
-        self.a_label = QLabel("a")
+        self.a_label = QLabel("a ")
         self.a_entry_field = QLineEdit()
         self.a_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.a_label, self.a_entry_field)
 
-        self.b_label = QLabel("b")
+        self.b_label = QLabel("b ")
         self.b_entry_field = QLineEdit()
         self.b_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.b_label, self.b_entry_field)
 
-        self.x_label = QLabel("x")
+        self.x_label = QLabel("x ")
         self.x_entry_field = QLineEdit()
         self.x_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.x_label, self.x_entry_field)
@@ -69,6 +69,9 @@ class LinearAlgorithmWindow(QWidget):
         self.calculate_button = QPushButton("Calculate")
         self.calculate_button.clicked.connect(self.calculate_linear)
         self.form.addWidget(self.calculate_button)
+
+        self.calculated_value_label = QLabel()
+        self.form.addWidget(self.calculated_value_label)
 
         self.save_to_file_button = QPushButton("Save to file")
         self.save_to_file_button.clicked.connect(self.save_to_file)
@@ -94,7 +97,7 @@ class LinearAlgorithmWindow(QWidget):
             errors.append("Invalid value x")
 
         if len(errors) == 0:
-            print(linear_algorithm.linear(a, b, x))
+            self.calculated_value_label.setText(str(linear_algorithm.linear(a, b, x)))
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
@@ -102,7 +105,23 @@ class LinearAlgorithmWindow(QWidget):
         pass
 
     def save_to_file(self):
-        pass
+        file_name = "linear"
+        counter = 1
+        while True:
+            try:
+                with open(file_name + str(counter) + ".txt", "xt") as file:
+                    file.write("a " + self.a_entry_field.text() + "\n")
+                    file.write("b " + self.b_entry_field.text() + "\n")
+                    file.write("x " + self.x_entry_field.text() + "\n")
+                    file.write("calculated " + self.calculated_value_label.text() + "\n")
+
+            except FileExistsError:
+                counter += 1
+            else:
+                QMessageBox.information(self, "Info",
+                                        "Successfully saved in {}".format(file_name + str(counter) + ".txt"),
+                                        QMessageBox.Ok)
+                break
 
 
 class BranchedAlgorithmWindow(QWidget):
@@ -120,17 +139,17 @@ class BranchedAlgorithmWindow(QWidget):
         self.file_load_button.clicked.connect(self.load_file)
         self.form.addWidget(self.file_load_button)
 
-        self.r_label = QLabel("r")
+        self.r_label = QLabel("r ")
         self.r_entry_field = QLineEdit()
         self.r_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.r_label, self.r_entry_field)
 
-        self.b_label = QLabel("b")
+        self.b_label = QLabel("b ")
         self.b_entry_field = QLineEdit()
         self.b_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.b_label, self.b_entry_field)
 
-        self.c_label = QLabel("c")
+        self.c_label = QLabel("c ")
         self.c_entry_field = QLineEdit()
         self.c_entry_field.setValidator(QDoubleValidator())
         self.form.addRow(self.c_label, self.c_entry_field)
