@@ -1,10 +1,12 @@
 from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLayout, QDesktopWidget, QFormLayout,
-                             QLineEdit, QPushButton, QMessageBox, QFileDialog)
+                             QLineEdit, QPushButton, QMessageBox, QFileDialog, QTableWidget, QTableWidgetItem)
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap, QDoubleValidator
+from os import remove
 import linear_algorithm
 import branched_algorithm
 import cyclic_algorithm
+
 
 
 class LabWindow(QWidget):
@@ -15,7 +17,7 @@ class LabWindow(QWidget):
 
     def init_window(self):
         self.setWindowTitle("Lab1")
-        self.setMinimumSize(QSize(600, 400))
+        self.setMinimumSize(QSize(600, 450))
         self.setStyleSheet("background-color:#2D3047; color:black; font-family: 'Open Sans Condensed'; font-size: 24px")
 
         tabs = QTabWidget()
@@ -241,9 +243,40 @@ class CyclicAlgorithmWindow(QWidget):
         self.file_load_button.clicked.connect(self.load_file)
         self.form.addWidget(self.file_load_button)
 
+        self.a_table = QTableWidget()
+        self.a_table.setStyleSheet("background-color: white; color:black; font-size: 16px")
+        self.a_table.setColumnCount(10)
+        self.a_table.setRowCount(1)
+        self.a_table.setVerticalHeaderLabels(["a"])
+        self.a_table.setFixedHeight(75)
+        self.a_table.itemChanged.connect(self.check_input_table)
+        self.form.addWidget(self.a_table)
+
+        self.b_table = QTableWidget()
+        self.b_table.setStyleSheet("background-color: white; color:black; font-size: 16px")
+        self.b_table.setColumnCount(10)
+        self.b_table.setRowCount(1)
+        self.b_table.setVerticalHeaderLabels(["b"])
+        self.b_table.setFixedHeight(75)
+        self.b_table.itemChanged.connect(self.check_input_table)
+        self.form.addWidget(self.b_table)
+
+        self.n_label = QLabel("n ")
+        self.n_entry_field = QLineEdit()
+        self.n_entry_field.setValidator(QDoubleValidator())
+        self.form.addRow(self.n_label, self.n_entry_field)
+
+        self.p_label = QLabel("p ")
+        self.p_entry_field = QLineEdit()
+        self.p_entry_field.setValidator(QDoubleValidator())
+        self.form.addRow(self.p_label, self.p_entry_field)
+
         self.calculate_button = QPushButton("Calculate")
         self.calculate_button.clicked.connect(self.calculate_cyclic)
         self.form.addWidget(self.calculate_button)
+
+        self.calculated_value_label = QLabel()
+        self.form.addWidget(self.calculated_value_label)
 
         self.save_to_file_button = QPushButton("Save to file")
         self.save_to_file_button.clicked.connect(self.save_to_file)
@@ -255,10 +288,86 @@ class CyclicAlgorithmWindow(QWidget):
         pass
 
     def load_file(self):
-        pass
+        try:
+            file_name = QFileDialog.getOpenFileName(self, "Load file")
+            with open(file_name[0], "r") as file:
+                a = file.readline().split()
+                b = file.readline().split()
+                n = file.readline().split()[1]
+                p = file.readline().split()[1]
+                self.insert_row(self.a_table, a, 0)
+                self.insert_row(self.b_table, b, 0)
+                self.n_entry_field.setText(n)
+                self.p_entry_field.setText(p)
+        except ValueError:
+            QMessageBox().warning(self, "Error", "Shit happens")
+
+    def insert_row(self, table, row_list, row):
+        table.setColumnCount(len(row_list)-1)
+        for item_index in range(1, len(row_list)):
+            table.setItem(row, item_index-1, QTableWidgetItem(row_list[item_index]))
+
 
     def save_to_file(self):
-        pass
+        file_name = "cyclic"
+        extension = ".txt"
+        counter = 1
+        while True:
+            try:
+                with open(file_name + str(counter) + extension, "xt") as file:
+                    try:
+                        self.write_table_row(self.a_table, 0, file)
+                        self.write_table_row(self.b_table, 0, file)
+                        self.write_value(self.n_label, self.n_entry_field, file)
+                        self.write_value(self.p_label, self.p_entry_field, file)
+                    except:
+                        remove(file_name + str(counter) + extension)
+                        QMessageBox.warning(self, "Error", "Invalid input")
+                        return
+            except FileExistsError:
+                counter += 1
+            else:
+                QMessageBox.information(self, "Info",
+                                        "Successfully saved in {}".format(file_name + str(counter) + ".txt"),
+                                        QMessageBox.Ok)
+                break
+
+    def write_table_row(self, table, row, file):
+        if table.item(row, 0) is None or table.item(row, 0).text() is "":
+            raise ValueError
+
+        file.write(table.takeVerticalHeaderItem(row).text())
+
+        for column in range(table.columnCount()):
+            item = table.item(row, column)
+            if item is None or item.text() is "":
+                break
+            else:
+                file.write(" " + item.text())
+
+        file.write("\n")
+
+    def write_value(self, label, line_edit, file):
+        if line_edit is None or line_edit.text() == "":
+            raise ValueError
+        else:
+            file.write(label.text() + line_edit.text() + "\n")
+
+    def check_input_table(self, Qitem):
+        if Qitem.text() == "":
+            return
+        else:
+            try:
+                test = float(Qitem.text())
+            except ValueError:
+                t = Qitem.tableWidget()
+                t.setFocus()
+                Qitem.setText("")
+                t.setCurrentCell(0, Qitem.column())
+
+                Msgbox = QMessageBox()
+                Msgbox.setText("Error, value must be number!")
+                Msgbox.exec()
 
 
 if __name__ == '__main__':
