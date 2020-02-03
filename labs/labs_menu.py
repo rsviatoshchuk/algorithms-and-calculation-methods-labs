@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QGroupBox, QGridLayout, QVBoxLayout,
                              QDesktopWidget)
+from labs.lab1 import lab_ui as l1
 
 
 class MainLabsWindow(QWidget):
@@ -54,7 +55,8 @@ class MainLabsWindow(QWidget):
         self.setLayout(vertical_box)
 
     def open_lab1(self):
-        pass
+        self.lab1 = l1.LabWindow()
+        self.lab1.show()
 
     def open_lab2(self):
         pass

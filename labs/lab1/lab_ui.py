@@ -3,9 +3,9 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLay
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap, QIntValidator
 from os import remove
-import linear_algorithm
-import branched_algorithm
-import cyclic_algorithm
+from labs.lab1 import linear_algorithm
+from labs.lab1 import branched_algorithm
+from labs.lab1 import cyclic_algorithm
 
 
 class LabWindow(QWidget):
