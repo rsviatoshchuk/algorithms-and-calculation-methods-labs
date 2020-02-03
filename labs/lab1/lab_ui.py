@@ -1,12 +1,11 @@
 from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLayout, QDesktopWidget, QFormLayout,
                              QLineEdit, QPushButton, QMessageBox, QFileDialog, QTableWidget, QTableWidgetItem)
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QPixmap, QDoubleValidator
+from PyQt5.QtGui import QPixmap, QIntValidator
 from os import remove
 import linear_algorithm
 import branched_algorithm
 import cyclic_algorithm
-
 
 
 class LabWindow(QWidget):
@@ -55,17 +54,17 @@ class LinearAlgorithmWindow(QWidget):
 
         self.a_label = QLabel("a ")
         self.a_entry_field = QLineEdit()
-        self.a_entry_field.setValidator(QDoubleValidator())
+        self.a_entry_field.textChanged.connect(self.check_float)
         self.form.addRow(self.a_label, self.a_entry_field)
 
         self.b_label = QLabel("b ")
         self.b_entry_field = QLineEdit()
-        self.b_entry_field.setValidator(QDoubleValidator())
+        self.b_entry_field.textChanged.connect(self.check_float)
         self.form.addRow(self.b_label, self.b_entry_field)
 
         self.x_label = QLabel("x ")
         self.x_entry_field = QLineEdit()
-        self.x_entry_field.setValidator(QDoubleValidator())
+        self.x_entry_field.textChanged.connect(self.check_float)
         self.form.addRow(self.x_label, self.x_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
@@ -73,33 +72,44 @@ class LinearAlgorithmWindow(QWidget):
         self.form.addWidget(self.calculate_button)
 
         self.calculated_value_label = QLabel()
+        self.calculated_value_label.hide()
         self.form.addWidget(self.calculated_value_label)
 
         self.save_to_file_button = QPushButton("Save to file")
         self.save_to_file_button.clicked.connect(self.save_to_file)
+        self.save_to_file_button.hide()
         self.form.addWidget(self.save_to_file_button)
 
         self.setLayout(self.form)
 
+    def check_float(self, text):
+        try:
+            if text is not "":
+                float(text)
+        except ValueError:
+            QMessageBox().warning(self, "Invalid input", "Value must be float!", QMessageBox.Ok)
+
     def calculate_linear(self):
         errors = []
         try:
-            a = int(self.a_entry_field.text())
+            a = float(self.a_entry_field.text())
         except:
             errors.append("Invalid value a")
 
         try:
-            b = int(self.b_entry_field.text())
+            b = float(self.b_entry_field.text())
         except:
             errors.append("Invalid value b")
 
         try:
-            x = int(self.x_entry_field.text())
+            x = float(self.x_entry_field.text())
         except:
             errors.append("Invalid value x")
 
         if len(errors) == 0:
             self.calculated_value_label.setText(str(linear_algorithm.linear(a, b, x)))
+            self.calculated_value_label.show()
+            self.save_to_file_button.show()
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
@@ -150,17 +160,17 @@ class BranchedAlgorithmWindow(QWidget):
 
         self.r_label = QLabel("r ")
         self.r_entry_field = QLineEdit()
-        self.r_entry_field.setValidator(QDoubleValidator())
+        self.r_entry_field.textChanged.connect(self.check_float)
         self.form.addRow(self.r_label, self.r_entry_field)
 
         self.b_label = QLabel("b ")
         self.b_entry_field = QLineEdit()
-        self.b_entry_field.setValidator(QDoubleValidator())
+        self.b_entry_field.textChanged.connect(self.check_float)
         self.form.addRow(self.b_label, self.b_entry_field)
 
         self.c_label = QLabel("c ")
         self.c_entry_field = QLineEdit()
-        self.c_entry_field.setValidator(QDoubleValidator())
+        self.c_entry_field.textChanged.connect(self.check_float)
         self.form.addRow(self.c_label, self.c_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
@@ -168,33 +178,44 @@ class BranchedAlgorithmWindow(QWidget):
         self.form.addWidget(self.calculate_button)
 
         self.calculated_value_label = QLabel()
+        self.calculated_value_label.hide()
         self.form.addWidget(self.calculated_value_label)
 
         self.save_to_file_button = QPushButton("Save to file")
         self.save_to_file_button.clicked.connect(self.save_to_file)
+        self.save_to_file_button.hide()
         self.form.addWidget(self.save_to_file_button)
 
         self.setLayout(self.form)
 
+    def check_float(self, text):
+        try:
+            if text is not "":
+                float(text)
+        except ValueError:
+            QMessageBox().warning(self, "Invalid input", "Value must be float!", QMessageBox.Ok)
+
     def calculate_branched(self):
         errors = []
         try:
-            r = int(self.r_entry_field.text())
+            r = float(self.r_entry_field.text())
         except:
             errors.append("Invalid value r")
 
         try:
-            b = int(self.b_entry_field.text())
+            b = float(self.b_entry_field.text())
         except:
             errors.append("Invalid value b")
 
         try:
-            c = int(self.c_entry_field.text())
+            c = float(self.c_entry_field.text())
         except:
             errors.append("Invalid value c")
 
         if len(errors) == 0:
             self.calculated_value_label.setText(str(branched_algorithm.branched(r, b, c)))
+            self.calculated_value_label.show()
+            self.save_to_file_button.show()
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
@@ -263,12 +284,14 @@ class CyclicAlgorithmWindow(QWidget):
 
         self.n_label = QLabel("n ")
         self.n_entry_field = QLineEdit()
-        self.n_entry_field.setValidator(QDoubleValidator())
+        self.n_entry_field.setValidator(QIntValidator())
+        self.n_entry_field.textChanged.connect(self.check_int)
         self.form.addRow(self.n_label, self.n_entry_field)
 
         self.p_label = QLabel("p ")
         self.p_entry_field = QLineEdit()
-        self.p_entry_field.setValidator(QDoubleValidator())
+        self.p_entry_field.setValidator(QIntValidator())
+        self.p_entry_field.textChanged.connect(self.check_int)
         self.form.addRow(self.p_label, self.p_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
@@ -276,16 +299,63 @@ class CyclicAlgorithmWindow(QWidget):
         self.form.addWidget(self.calculate_button)
 
         self.calculated_value_label = QLabel()
+        self.calculated_value_label.hide()
         self.form.addWidget(self.calculated_value_label)
 
         self.save_to_file_button = QPushButton("Save to file")
         self.save_to_file_button.clicked.connect(self.save_to_file)
+        self.save_to_file_button.hide()
         self.form.addWidget(self.save_to_file_button)
 
         self.setLayout(self.form)
 
+    def check_int(self, text):
+        try:
+            float(text)
+        except ValueError:
+            QMessageBox().warning(self, "Invalid input", "Value n and p must be integers!", QMessageBox.Ok)
+
     def calculate_cyclic(self):
-        pass
+        errors = []
+        a = []
+        if self.a_table.item(0, 0) is None or self.a_table.item(0, 0).text() is "":
+            raise ValueError
+
+        for column in range(self.a_table.columnCount()):
+            item = self.a_table.item(0, column)
+            if item is None or item.text() is "":
+                break
+            else:
+                a.append(float(item.text()))
+
+        b = []
+        if self.b_table.item(0, 0) is None or self.a_table.item(0, 0).text() is "":
+            raise ValueError
+
+        for column in range(self.b_table.columnCount()):
+            item = self.b_table.item(0, column)
+            if item is None or item.text() is "":
+                break
+            else:
+                b.append(float(item.text()))
+
+        try:
+            n = int(self.n_entry_field.text())
+        except Warning:
+            errors.append("Invalid value n")
+
+        try:
+            p = int(self.p_entry_field.text())
+        except:
+            errors.append("Invalid value p")
+
+        if len(errors) == 0:
+            self.calculated_value_label.setText(str(cyclic_algorithm.cyclic(a, b, n, p)))
+            self.calculated_value_label.show()
+            self.save_to_file_button.show()
+        else:
+            QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
+
 
     def load_file(self):
         try:
