@@ -16,7 +16,7 @@ class LabWindow(QWidget):
 
     def init_window(self):
         self.setWindowTitle("Lab1")
-        self.setMinimumSize(QSize(600, 450))
+        self.setMinimumSize(QSize(600, 500))
         self.setStyleSheet("background-color:#2D3047; color:black; font-family: 'Open Sans Condensed'; font-size: 24px")
 
         tabs = QTabWidget()
@@ -117,9 +117,11 @@ class LinearAlgorithmWindow(QWidget):
         try:
             file_name = QFileDialog.getOpenFileName(self, "Load file")
             with open(file_name[0], "r") as file:
-                self.a_entry_field.setText(file.readline()[2:])
-                self.b_entry_field.setText(file.readline()[2:])
-                self.x_entry_field.setText(file.readline()[2:])
+                self.a_entry_field.setText(file.readline().split()[1])
+                self.b_entry_field.setText(file.readline().split()[1])
+                self.x_entry_field.setText(file.readline().split()[1])
+                self.calculated_value_label.hide()
+                self.save_to_file_button.hide()
         except:
             QMessageBox().warning(self, "Error", "Shit happens")
 
@@ -223,9 +225,11 @@ class BranchedAlgorithmWindow(QWidget):
         try:
             file_name = QFileDialog.getOpenFileName(self, "Load file")
             with open(file_name[0], "r") as file:
-                self.r_entry_field.setText(file.readline()[2:])
-                self.b_entry_field.setText(file.readline()[2:])
-                self.c_entry_field.setText(file.readline()[2:])
+                self.r_entry_field.setText(file.readline().split()[1])
+                self.b_entry_field.setText(file.readline().split()[1])
+                self.c_entry_field.setText(file.readline().split()[1])
+                self.calculated_value_label.hide()
+                self.save_to_file_button.hide()
         except:
             QMessageBox().warning(self, "Error", "Shit happens")
 
@@ -311,7 +315,8 @@ class CyclicAlgorithmWindow(QWidget):
 
     def check_int(self, text):
         try:
-            float(text)
+            if text is not "":
+                int(text)
         except ValueError:
             QMessageBox().warning(self, "Invalid input", "Value n and p must be integers!", QMessageBox.Ok)
 
@@ -356,7 +361,6 @@ class CyclicAlgorithmWindow(QWidget):
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
-
     def load_file(self):
         try:
             file_name = QFileDialog.getOpenFileName(self, "Load file")
@@ -369,6 +373,8 @@ class CyclicAlgorithmWindow(QWidget):
                 self.insert_row(self.b_table, b, 0)
                 self.n_entry_field.setText(n)
                 self.p_entry_field.setText(p)
+                self.calculated_value_label.hide()
+                self.save_to_file_button.hide()
         except ValueError:
             QMessageBox().warning(self, "Error", "Shit happens")
 
@@ -376,7 +382,6 @@ class CyclicAlgorithmWindow(QWidget):
         table.setColumnCount(len(row_list)-1)
         for item_index in range(1, len(row_list)):
             table.setItem(row, item_index-1, QTableWidgetItem(row_list[item_index]))
-
 
     def save_to_file(self):
         file_name = "cyclic"
