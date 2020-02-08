@@ -44,7 +44,7 @@ class LinearAlgorithmWindow(QWidget):
         self.form = QFormLayout()
 
         self.linear_image_label = QLabel()
-        self.linear_image_label.setPixmap(QPixmap("lab1_linear.png"))
+        self.linear_image_label.setPixmap(QPixmap(r"lab1/lab1_linear.png"))
         self.linear_image_label.setAlignment(Qt.AlignCenter)
         self.form.addWidget(self.linear_image_label)
 
@@ -107,9 +107,12 @@ class LinearAlgorithmWindow(QWidget):
             errors.append("Invalid value x")
 
         if len(errors) == 0:
-            self.calculated_value_label.setText(str(linear_algorithm.linear(a, b, x)))
-            self.calculated_value_label.show()
-            self.save_to_file_button.show()
+            try:
+                self.calculated_value_label.setText(str(linear_algorithm.linear(a, b, x)))
+                self.calculated_value_label.show()
+                self.save_to_file_button.show()
+            except ZeroDivisionError:
+                QMessageBox().warning(self, "Value error", "Division by zero!", QMessageBox.Ok)
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
@@ -162,17 +165,22 @@ class BranchedAlgorithmWindow(QWidget):
 
         self.r_label = QLabel("r ")
         self.r_entry_field = QLineEdit()
-        self.r_entry_field.textChanged.connect(self.check_float)
+        self.r_entry_field.textChanged.connect(self.r_checking)
+        self.r_entry_field.editingFinished.connect(self.r_zero_check)
         self.form.addRow(self.r_label, self.r_entry_field)
 
         self.b_label = QLabel("b ")
         self.b_entry_field = QLineEdit()
         self.b_entry_field.textChanged.connect(self.check_float)
+        self.b_label.hide()
+        self.b_entry_field.hide()
         self.form.addRow(self.b_label, self.b_entry_field)
 
         self.c_label = QLabel("c ")
         self.c_entry_field = QLineEdit()
         self.c_entry_field.textChanged.connect(self.check_float)
+        self.c_label.hide()
+        self.c_entry_field.hide()
         self.form.addRow(self.c_label, self.c_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
@@ -192,8 +200,37 @@ class BranchedAlgorithmWindow(QWidget):
 
     def check_float(self, text):
         try:
-            if text is not "":
+            if text is not "" and text != "-":
                 float(text)
+        except ValueError:
+            QMessageBox().warning(self, "Invalid input", "Value must be float!", QMessageBox.Ok)
+
+    def r_zero_check(self):
+        try:
+            if float(self.r_entry_field.text()) == 0:
+                QMessageBox().warning(self, "Warning", "Dividing by zero!", QMessageBox.Ok)
+        except:
+            return
+
+    def r_checking(self, text):
+        try:
+            if text is "" or text == "-":
+                self.b_label.hide()
+                self.b_entry_field.hide()
+                self.c_label.hide()
+                self.c_entry_field.hide()
+            else:
+                if float(text) > 0:
+                    self.b_label.hide()
+                    self.b_entry_field.hide()
+                    self.c_label.hide()
+                    self.c_entry_field.hide()
+                else:
+                    self.b_label.show()
+                    self.b_entry_field.show()
+                    self.c_label.show()
+                    self.c_entry_field.show()
+
         except ValueError:
             QMessageBox().warning(self, "Invalid input", "Value must be float!", QMessageBox.Ok)
 
@@ -201,23 +238,31 @@ class BranchedAlgorithmWindow(QWidget):
         errors = []
         try:
             r = float(self.r_entry_field.text())
+            if r > 0:
+                b = None
+                c = None
+            else:
+                try:
+                    b = float(self.b_entry_field.text())
+                except:
+                    errors.append("Invalid value b")
+
+                try:
+                    c = float(self.c_entry_field.text())
+                except:
+                    errors.append("Invalid value c")
+
         except:
             errors.append("Invalid value r")
 
-        try:
-            b = float(self.b_entry_field.text())
-        except:
-            errors.append("Invalid value b")
-
-        try:
-            c = float(self.c_entry_field.text())
-        except:
-            errors.append("Invalid value c")
 
         if len(errors) == 0:
-            self.calculated_value_label.setText(str(branched_algorithm.branched(r, b, c)))
-            self.calculated_value_label.show()
-            self.save_to_file_button.show()
+            try:
+                self.calculated_value_label.setText(str(branched_algorithm.branched(r, b, c)))
+                self.calculated_value_label.show()
+                self.save_to_file_button.show()
+            except ZeroDivisionError:
+                QMessageBox().warning(self, "Value error", "Division by zero!", QMessageBox.Ok)
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
@@ -346,7 +391,7 @@ class CyclicAlgorithmWindow(QWidget):
 
         try:
             n = int(self.n_entry_field.text())
-        except Warning:
+        except:
             errors.append("Invalid value n")
 
         try:
@@ -355,9 +400,12 @@ class CyclicAlgorithmWindow(QWidget):
             errors.append("Invalid value p")
 
         if len(errors) == 0:
-            self.calculated_value_label.setText(str(cyclic_algorithm.cyclic(a, b, n, p)))
-            self.calculated_value_label.show()
-            self.save_to_file_button.show()
+            try:
+                self.calculated_value_label.setText(str(cyclic_algorithm.cyclic(a, b, n, p)))
+                self.calculated_value_label.show()
+                self.save_to_file_button.show()
+            except ZeroDivisionError:
+                QMessageBox().warning(self, "Value error", "Division by zero! Please check your arrays", QMessageBox.Ok)
         else:
             QMessageBox().warning(self, "Invalid input", "\n".join(errors), QMessageBox.Ok)
 
