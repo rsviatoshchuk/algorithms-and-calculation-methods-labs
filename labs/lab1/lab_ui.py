@@ -155,7 +155,7 @@ class BranchedAlgorithmWindow(QWidget):
         self.form = QFormLayout()
 
         self.branched_image_label = QLabel()
-        self.branched_image_label.setPixmap(QPixmap("lab1_branched.png"))
+        self.branched_image_label.setPixmap(QPixmap(r"lab1/lab1_branched.png"))
         self.branched_image_label.setAlignment(Qt.AlignCenter)
         self.form.addWidget(self.branched_image_label)
 
@@ -305,7 +305,7 @@ class CyclicAlgorithmWindow(QWidget):
         self.form = QFormLayout()
 
         self.cyclic_image_label = QLabel()
-        self.cyclic_image_label.setPixmap(QPixmap("lab1_cyclic.png"))
+        self.cyclic_image_label.setPixmap(QPixmap(r"lab1/lab1_cyclic.png"))
         self.cyclic_image_label.setAlignment(Qt.AlignCenter)
         self.form.addWidget(self.cyclic_image_label)
 
