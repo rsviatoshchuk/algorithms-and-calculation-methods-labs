@@ -64,7 +64,7 @@ class LinearAlgorithmWindow(QWidget):
 
         self.x_label = QLabel("x ")
         self.x_entry_field = QLineEdit()
-        self.x_entry_field.textChanged.connect(self.check_float)
+        self.x_entry_field.textChanged.connect(self.x_check_negativity)
         self.form.addRow(self.x_label, self.x_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
@@ -84,8 +84,19 @@ class LinearAlgorithmWindow(QWidget):
 
     def check_float(self, text):
         try:
-            if text is not "":
+            if text is not "" and text != "-":
                 float(text)
+        except ValueError:
+            QMessageBox().warning(self, "Invalid input", "Value must be float!", QMessageBox.Ok)
+
+    def x_check_negativity(self, text):
+        try:
+            if text == "-":
+                QMessageBox().warning(self, "Invalid input", "Value x must be positive", QMessageBox.Ok)
+            if text is not "" and text != "-":
+                x = float(text)
+                if x < 0:
+                    QMessageBox().warning(self, "Invalid input", "Value x must be positive", QMessageBox.Ok)
         except ValueError:
             QMessageBox().warning(self, "Invalid input", "Value must be float!", QMessageBox.Ok)
 
@@ -103,6 +114,8 @@ class LinearAlgorithmWindow(QWidget):
 
         try:
             x = float(self.x_entry_field.text())
+            if x < 0:
+                raise ValueError
         except:
             errors.append("Invalid value x")
 
@@ -334,13 +347,13 @@ class CyclicAlgorithmWindow(QWidget):
         self.n_label = QLabel("n ")
         self.n_entry_field = QLineEdit()
         self.n_entry_field.setValidator(QIntValidator())
-        self.n_entry_field.textChanged.connect(self.check_int)
+        self.n_entry_field.textChanged.connect(self.check_natural_int)
         self.form.addRow(self.n_label, self.n_entry_field)
 
         self.p_label = QLabel("p ")
         self.p_entry_field = QLineEdit()
         self.p_entry_field.setValidator(QIntValidator())
-        self.p_entry_field.textChanged.connect(self.check_int)
+        self.p_entry_field.textChanged.connect(self.check_natural_int)
         self.form.addRow(self.p_label, self.p_entry_field)
 
         self.calculate_button = QPushButton("Calculate")
@@ -358,10 +371,12 @@ class CyclicAlgorithmWindow(QWidget):
 
         self.setLayout(self.form)
 
-    def check_int(self, text):
+    def check_natural_int(self, text):
         try:
             if text is not "":
-                int(text)
+                i = int(text)
+                if i <= 0:
+                    QMessageBox().warning(self, "Invalid input", "Value must be natural!", QMessageBox.Ok)
         except ValueError:
             QMessageBox().warning(self, "Invalid input", "Value n and p must be integers!", QMessageBox.Ok)
 
@@ -391,11 +406,15 @@ class CyclicAlgorithmWindow(QWidget):
 
         try:
             n = int(self.n_entry_field.text())
+            if n <=0:
+                raise ValueError
         except:
             errors.append("Invalid value n")
 
         try:
             p = int(self.p_entry_field.text())
+            if p <=0:
+                raise ValueError
         except:
             errors.append("Invalid value p")
 

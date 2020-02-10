@@ -18,7 +18,7 @@ class MainLabsWindow(QWidget):
     def create_layout(self):
         vertical_box = QVBoxLayout()
 
-        info_label = QLabel("Це гловне меню, що об'єднує всі лаби в одному місці\n"
+        info_label = QLabel("Це головне меню, що об'єднує всі лаби в одному місці\n"
                             "Варіант завдань - 23")
         info_label.setStyleSheet("color:white; font-family: 'Open Sans Condensed'; font-size: 24px")
 
