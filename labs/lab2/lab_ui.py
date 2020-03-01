@@ -68,6 +68,7 @@ class MergeSortUI(QWidget):
             file_name = QFileDialog.getOpenFileName(self, "Load file")
             with open(file_name[0], "r") as file:
                 self.sorting_array_entry_field.setText(" ".join(file.readline().split()[1:]))
+            self.save_to_file_button.hide()
         except:
             QMessageBox().warning(self, "Error", "Shit happens")
 
@@ -89,8 +90,9 @@ class MergeSortUI(QWidget):
 
     def sort(self):
         try:
-            array = [float(i) for i in self.sorting_array_entry_field.text().split()]
-            self.sorted_array_entry_field.setText(" ".join([str(i) for i in merge_sort.merge_sort_with_time(array)[0]]))
+            array = list(map(float, self.sorting_array_entry_field.text().split()))
+            print(array)
+            self.sorted_array_entry_field.setText(" ".join(list(map(str, merge_sort.merge_sort_with_time(array)[0]))))
             self.save_to_file_button.show()
         except FileExistsError:
             QMessageBox().warning(self, "Error", "Invalid input")
@@ -99,6 +101,9 @@ class MergeSortUI(QWidget):
 class SortTest(QWidget):
     def __init__(self):
         super().__init__()
+
+    def start_time_test(self):
+        pass
 
     def load_file(self):
         try:
@@ -128,6 +133,9 @@ class SortTest(QWidget):
 class SortTestPlots(QWidget):
     def __init__(self):
         super().__init__()
+
+        self.start_time_test_button = QPushButton("Start TimeTest")
+        self.start_time_test_button.clicked.connect(self.start_time_test)
 
     def save_plots(self):
         pass
