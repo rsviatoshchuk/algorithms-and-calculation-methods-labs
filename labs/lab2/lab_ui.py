@@ -4,6 +4,8 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap, QIntValidator
 from os import remove
 
+import merge_sort
+
 
 class LabWindow(QWidget):
     def __init__(self):
@@ -65,18 +67,18 @@ class MergeSortUI(QWidget):
         try:
             file_name = QFileDialog.getOpenFileName(self, "Load file")
             with open(file_name[0], "r") as file:
-                pass
-                # self.a_entry_field.setText(file.readline().split()[1:])
+                self.sorting_array_entry_field.setText(" ".join(file.readline().split()[1:]))
         except:
             QMessageBox().warning(self, "Error", "Shit happens")
 
     def save_to_file(self):
-        file_name = "linear"
+        file_name = "sort"
         counter = 1
         while True:
             try:
                 with open(file_name + str(counter) + ".txt", "xt") as file:
-                    pass
+                    file.write("sorting_array " + self.sorting_array_entry_field.text() + "\n")
+                    file.write("sorted_array " + self.sorted_array_entry_field.text() + "\n")
             except FileExistsError:
                 counter += 1
             else:
@@ -86,7 +88,12 @@ class MergeSortUI(QWidget):
                 break
 
     def sort(self):
-        pass
+        try:
+            array = [float(i) for i in self.sorting_array_entry_field.text().split()]
+            self.sorted_array_entry_field.setText(" ".join([str(i) for i in merge_sort.merge_sort_with_time(array)[0]]))
+            self.save_to_file_button.show()
+        except FileExistsError:
+            QMessageBox().warning(self, "Error", "Invalid input")
 
 
 class SortTest(QWidget):
