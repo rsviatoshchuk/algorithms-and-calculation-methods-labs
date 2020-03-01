@@ -73,7 +73,7 @@ if __name__ == '__main__':
     a = [44]
     sorted_a = [44]
     sorted_array = merge_sort(a)
-    if a == sorted_array:
+    if sorted_a == sorted_array:
         print("OK")
     else:
         print("FAILED")
