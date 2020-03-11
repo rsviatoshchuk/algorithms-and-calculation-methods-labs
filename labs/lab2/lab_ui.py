@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QTabWidget, QLabel, QVBoxLay
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QPixmap, QIntValidator
 from os import remove
-
+import random
 import merge_sort
 
 
@@ -101,9 +101,33 @@ class MergeSortUI(QWidget):
 class SortTest(QWidget):
     def __init__(self):
         super().__init__()
+        self.test_arrays = None
+        self.chart_timetest = None
+
+        self.vb = QVBoxLayout()
+
+        self.generate_test_arrays_button = QPushButton("Generate arrays")
+        self.generate_test_arrays_button.clicked.connect(self.generate_test_arrays)
+        self.vb.addWidget(self.generate_test_arrays_button)
+
+        self.start_time_test_button = QPushButton("Start TimeTest")
+        self.start_time_test_button.clicked.connect(self.start_time_test)
+        self.vb.addWidget(self.start_time_test_button)
+
+        self.setLayout(self.vb)
+
+    def generate_test_arrays(self):
+        test_arrays = []
+        for i in range(1, 11):
+            test_arrays.append([random.randint(0, 1000) for i in range(10000*i)])
+        self.test_arrays = test_arrays
 
     def start_time_test(self):
-        pass
+        chart_timetest = []
+        for array in self.test_arrays:
+            chart_timetest.append([len(array), merge_sort.merge_sort_with_time(array)[1]])
+        self.chart_timetest = chart_timetest
+        print(chart_timetest)
 
     def load_file(self):
         try:
@@ -133,9 +157,6 @@ class SortTest(QWidget):
 class SortTestPlots(QWidget):
     def __init__(self):
         super().__init__()
-
-        self.start_time_test_button = QPushButton("Start TimeTest")
-        self.start_time_test_button.clicked.connect(self.start_time_test)
 
     def save_plots(self):
         pass
